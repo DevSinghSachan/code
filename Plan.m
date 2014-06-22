@@ -38,12 +38,9 @@ classdef Plan < handle
             randn('seed', 1);
             rand('seed', 1);
             obj.layer = {};
-            weights = sprintf('model/%s.mat', obj.name);
+            weights = sprintf('models/%s.mat', obj.name);
             if (exist(weights , 'file'))
-                fprintf('Loading weights from %s.\n', weights);
                 obj.all_uploaded_weights = load(weights);
-            else
-                fprintf('Starting training from scratch.\n')
             end
             global plan cuda
             plan = obj;
@@ -59,6 +56,11 @@ classdef Plan < handle
                 end
             end
             fprintf('Total number of\n\ttotal learnable vars = %d\n\ttotal vars = %d\n\ttotal vars on the gpu = %d\n', obj.stats.total_learnable_vars, obj.stats.total_vars, obj.stats.total_vars_gpu);
+            if (exist(weights , 'file'))
+                fprintf('\nLoaded weights from %s.\n', weights);
+            else
+                fprintf('\nStarting training from scratch.\n');
+            end
             obj.all_uploaded_weights = [];
         end
 
