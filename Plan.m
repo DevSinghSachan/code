@@ -51,15 +51,16 @@ classdef Plan < handle
                 if strcmp(json.type(), 'Spec') == 0
                     obj.layer{end + 1} = eval(sprintf('%s(json);', json.type()));
                 else
-                    plan.lr = json.lr;
-                    plan.momentum = json.momentum;
+                    plan.lr = Val(json, 'lr', 1);
+                    plan.momentum = Val(json, 'momentum', 0);
+                    plan.input.max_repeat = Val(json, 'max_repeat', 10);
                 end
             end
             fprintf('Total number of\n\ttotal learnable vars = %d\n\ttotal vars = %d\n\ttotal vars on the gpu = %d\n', obj.stats.total_learnable_vars, obj.stats.total_vars, obj.stats.total_vars_gpu);
             if (exist(weights , 'file'))
-                fprintf('\nLoaded weights from %s.\n', weights);
+                fprintf('\nLoaded weights from %s.\n\n', weights);
             else
-                fprintf('\nStarting training from scratch.\n');
+                fprintf('\nStarting training from scratch.\n\n');
             end
             obj.all_uploaded_weights = [];
         end

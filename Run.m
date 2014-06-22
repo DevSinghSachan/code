@@ -21,15 +21,16 @@ for repeat = last_repeat:input.max_repeat
         incorrect = incorrect + plan.classifier.GetScore();
         all = all + input.batch_size;
         if (mod((input.step - 1), floor(input.train.batches / 5)) == 0)
-            fprintf('incorrect = %d, all = %d\n', incorrect, all);
+            fprintf(' number of incorrect train examples = %d, all = %d, err = %.3f%%\n', incorrect, all, incorrect / all * 100);
         end
     end
     input.repeat = repeat + 1;
-    fprintf('\nEpoch took = %f\n', toc(repeattime));   
-    [incr_test, err] = Test(0);
-    fprintf('\nepoch = %d, incr_test = %d, err = %f\n', repeat, incr_test, err);
+    fprintf('\nEpoch took = %.1f min.\n', toc(repeattime) / 60);   
+    [incr_test, all_test] = Test(0);
+    fprintf('\nepoch = %d, number of incorrrent test examples = %d, all = %d, err = %.3f%%\n', repeat, incr_test, all_test, incr_test / all_test * 100);
     save_plan();
 end
+fprintf('Training is finished.\n');
 end
 
 function save_plan()

@@ -55,6 +55,7 @@
     {
       "type": "Spec",
       "lr": 0.1,
-      "momentum": 0.9
+      "momentum": 0.9,
+      "max_repeat": 10,
     }
 ]

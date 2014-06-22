@@ -1,6 +1,6 @@
-function [incr, err] = Test(train)
+function [incr, all] = Test(train)
 global plan;
-plan.training = 0;
+plan.training = 0; % Turns off dropout.
 incr = 0;
 all = 0;
 input = plan.input;
@@ -15,7 +15,6 @@ while (true)
     ForwardPass();    
     incr = incr + plan.classifier.GetScore();
     all = all + plan.input.batch_size;
-    err = sum(incr) / all;
 end
-plan.training = 1;
+plan.training = 1; % Turns on dropout.
 end

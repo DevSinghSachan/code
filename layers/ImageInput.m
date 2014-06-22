@@ -22,8 +22,12 @@ classdef ImageInput < Input
             catch
             end
             if (strcmp(file_pattern(1:4), 'http'))                
-                idxs = strfind(file_pattern, '/');
-                target = sprintf('data%s', file_pattern(idxs(end - 1):end));
+                idxs = strfind(file_pattern, '/');                
+                dir_path = sprintf('data%s', file_pattern(idxs(end - 1):idxs(end)));
+                if ~exist(dir_path, 'file')
+                    mkdir(dir_path);
+                end
+                target = sprintf('data%s', file_pattern(idxs(end - 1):end));                
                 if ~exist(sprintf('%s.mat', target), 'file')
                     fprintf('Downloading %s.mat to %s.mat\n', file_pattern, target);
                     urlwrite(sprintf('%s.mat', file_pattern), sprintf('%s.mat', target));

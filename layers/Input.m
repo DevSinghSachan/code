@@ -2,7 +2,6 @@ classdef Input < Layer
     properties
         repeat
         batch_size
-        translate
         step
         max_repeat         
     end
@@ -10,10 +9,9 @@ classdef Input < Layer
         function obj = Input(json)
             obj@Layer(json);
             global plan            
-            obj.repeat = 1;
+            obj.repeat = Val(plan.all_uploaded_weights, 'plan.input.repeat', 1);
             obj.step = 1;            
             obj.batch_size = Val(json, 'batch_size', 6);            
-            obj.translate = Val(json, 'translate', 0);            
             obj.max_repeat = 10000; 
             obj.gpu.vars.out = -1;
             obj.gpu.vars.Y = -1;
