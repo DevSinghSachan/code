@@ -30,7 +30,7 @@ classdef Dropout < Layer
             vars = obj.cpu.vars;
             out = zeros(size(vars.X));
             if (plan.training)
-                rand('seed', 100000 * plan.repeat + plan.input.step);
+                rand('seed', 100000 * plan.input.repeat + plan.input.step);
                 ran = rand(size(vars.X));
                 idx = logical(ran > obj.p);
                 obj.cpu.vars.idx = idx;

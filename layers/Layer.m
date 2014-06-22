@@ -198,45 +198,34 @@ classdef Layer < handle
                     
                     eval(sprintf('C_(CopyToGPU, vars_gid, layer.cpu.vars.%s)', name));
                     eval(sprintf('C_(CopyToGPU, dvars_gid, layer.cpu.dvars.%s)', name));
-                    eval(sprintf('C_(CopyToGPU, accum_gid, layer.cpu.accum.%s)', name));
-                    
-                    % accum = (1 - momentum) * dvars / bs + momentum * accum
-%                     C_(Scale, accum_gid, single(momentum), accum_gid);
-%                     C_(Scale, layer.gpu.vars.temp, single((1 - momentum) / plan.input.batch_size), dvars_gid);
-%                     C_(Add, accum_gid, layer.gpu.vars.temp, accum_gid);
-%                     
-%                     % vars = vars - lr * accum;
-%                     C_(Scale, accum_gid, single(lr), layer.gpu.vars.temp);
-%                     C_(Subtract, vars_gid, layer.gpu.vars.temp, vars_gid);
+                    eval(sprintf('C_(CopyToGPU, accum_gid, layer.cpu.accum.%s)', name));                   
                     
                     C_(Scale, accum_gid, single(momentum), accum_gid);
                     C_(Scale, dvars_gid, single((1 - momentum) / plan.input.batch_size), dvars_gid);
                     C_(Add, accum_gid, dvars_gid, accum_gid);
                     C_(Scale, dvars_gid, single(plan.input.batch_size / (1 - momentum)), dvars_gid); 
                   
-                    C_(Scale, accum_gid, single(lr), accum_gid); % XXX : Fix it (lose of numerical precision.
+                    C_(Scale, accum_gid, single(lr), accum_gid); 
                     C_(Subtract, vars_gid, accum_gid, vars_gid);
-                    C_(Scale, accum_gid, single(1 / lr), accum_gid); % XXX : Fix it (lose of numerical precision.
+                    C_(Scale, accum_gid, single(1 / lr), accum_gid); 
                 end                
             end
         end        
         
         function DisplayInfo(layer)
             global plan
-            fprintf('%s \n', layer.type);
+            fprintf('%s', layer.type);
             f = fields(layer.cpu.vars);
             for i = 1:length(f)
                 if (strcmp(f{i}, 'X'))
                     continue;
                 end
-                sparam = eval(sprintf('size(layer.cpu.vars.%s)', f{i}));
-                
-                fprintf('\n\t%s = [', f{i});
+                sparam = eval(sprintf('size(layer.cpu.vars.%s)', f{i}));                
+                fprintf('\n\t%s = dims(', f{i});
                 for k = 1:length(sparam)
                     fprintf('%d ', sparam(k));
                 end
-                fprintf('] = %d', prod(sparam));                
-                
+                fprintf(') = %d params', prod(sparam));                                
                 try
                     fun = func2str(eval(sprintf('layer.init.%s.init_fun', f{i})));
                     mult = eval(sprintf('layer.init.%s.mult', f{i}));

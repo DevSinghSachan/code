@@ -28,6 +28,24 @@ for repeat = last_repeat:input.max_repeat
     fprintf('\nEpoch took = %f\n', toc(repeattime));   
     [incr_test, err] = Test(0);
     fprintf('\nepoch = %d, incr_test = %d, err = %f\n', repeat, incr_test, err);
+    save_plan();
 end
 end
+
+function save_plan()
+    global plan
+    fname = sprintf('models/%s.mat', plan.name);
+    fprintf('Saving model to the file : %s\n', fname);
+    train = plan.input.train;
+    test = plan.input.test;
+    val = plan.input.val;
+    plan.input.train = [];
+    plan.input.test = [];
+    plan.input.val = [];    
+    save(fname, 'plan');
+    plan.input.train = train;
+    plan.input.test = test;
+    plan.input.val = val;        
+end
+
 

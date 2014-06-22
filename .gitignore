@@ -12,3 +12,5 @@
 *.cpp
 *.mexa64
 *.mexmaci64
+*.mat
+*~

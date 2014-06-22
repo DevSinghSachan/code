@@ -21,7 +21,18 @@ classdef ImageInput < Input
                 return;
             catch
             end
-            tmp = load(file_pattern);
+            if (strcmp(file_pattern(1:4), 'http'))                
+                idxs = strfind(file_pattern, '/');
+                target = sprintf('data%s', file_pattern(idxs(end - 1):end));
+                if ~exist(sprintf('%s.mat', target), 'file')
+                    fprintf('Downloading %s.mat to %s.mat\n', file_pattern, target);
+                    urlwrite(sprintf('%s.mat', file_pattern), sprintf('%s.mat', target));
+                    fprintf('File downloaded successfully.\n');
+                end
+            else
+                target = file_pattern;
+            end
+            tmp = load(target);
             data = tmp.data;
             obj.output_size = size(data{1}.Y);
             batches = floor(length(data) / batch_size);
@@ -40,7 +51,7 @@ classdef ImageInput < Input
                 Y{step} = single(Y_tmp);
             end            
             prefix = '';
-            save(sprintf('%s%s%d', prefix, file_pattern, batch_size), 'X', 'Y', 'batches');            
+            save(sprintf('%s%s%d', prefix, target, batch_size), 'X', 'Y', 'batches');            
         end
         
         function [X, Y, step] = GetImage_(obj, step, train)
