@@ -12,6 +12,9 @@ classdef Plan < handle
         upload_weights
         all_uploaded_weights
         lr
+        lr_decay
+        decay_after
+        decay_period
         momentum
         training        
         name
@@ -51,14 +54,17 @@ classdef Plan < handle
                 if strcmp(json.type(), 'Spec') == 0
                     obj.layer{end + 1} = eval(sprintf('%s(json);', json.type()));
                 else
-                    plan.lr = Val(json, 'lr', 1);
+                    plan.lr = Val(json, 'lr', 0.1);
+                    plan.lr_decay = Val(json, 'lr_decay', 1);
+                    plan.decay_after = Val(json, 'decay_after', 10);
+                    plan.decay_period = Val(json, 'decay_period', 5);
                     plan.momentum = Val(json, 'momentum', 0);
                     plan.input.max_repeat = Val(json, 'max_repeat', 10);
                 end
             end
             fprintf('Total number of\n\ttotal learnable vars = %d\n\ttotal vars = %d\n\ttotal vars on the gpu = %d\n', obj.stats.total_learnable_vars, obj.stats.total_vars, obj.stats.total_vars_gpu);
             if (exist(weights , 'file'))
-                fprintf('\nLoaded weights from %s.\n\n', weights);
+                fprintf('\nLoaded weights from %s. Current epoch = %d.\n\n', weights, obj.all_uploaded_weights.plan.input.repeat);
             else
                 fprintf('\nStarting training from scratch.\n\n');
             end

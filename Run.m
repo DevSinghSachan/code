@@ -4,6 +4,7 @@ plan.training = 1;
 assert(length(plan.layer) > 1);
 input = plan.input;
 last_repeat = input.repeat;
+start = tic;
 for repeat = last_repeat:input.max_repeat
     input.training = 1;
     repeattime = tic;
@@ -15,7 +16,7 @@ for repeat = last_repeat:input.max_repeat
         if (input.step == -1)
             break;
         end
-        fprintf('*');
+        if (mod(input.step, 2) == 0) fprintf('*');end
         ForwardPass();
         BackwardPass();
         incorrect = incorrect + plan.classifier.GetScore();
@@ -30,7 +31,7 @@ for repeat = last_repeat:input.max_repeat
     fprintf('\nepoch = %d, number of incorrrent test examples = %d, all = %d, err = %.3f%%\n', repeat, incr_test, all_test, incr_test / all_test * 100);
     save_plan();
 end
-fprintf('Training is finished.\n');
+fprintf('Training is finished. Total time = %.2f mins.\n', toc(start) / 60);
 end
 
 function save_plan()

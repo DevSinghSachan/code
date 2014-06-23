@@ -38,7 +38,7 @@
 
     {
         "type": "FC",
-        "depth": 100,
+        "depth": 200,
         "function": "RELU"
     },
 
@@ -55,7 +55,10 @@
     {
       "type": "Spec",
       "lr": 0.1,
+      "lr_decay": 10,
+      "decay_after": 10,
+      "decay_period": 4,
       "momentum": 0.9,
-      "max_repeat": 10,
+      "max_repeat": 20,
     }
 ]

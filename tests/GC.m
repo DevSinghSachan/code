@@ -29,9 +29,6 @@ plan.input.GetImage(1);
 vars = layer.cpu.vars;
 vars.X = plan.input.cpu.vars.out;
 
-vars.X(randn(size(vars.X)) > 0.4) = 0; % Will cause Maxpool to fail
-%vars.X(1, 1, 1, 1) = 0; % Will cause Maxpool to fail
-
 back_in = randn([size(vars.X, 1), dims]);
 if (strcmp(layer.type, 'Softmax'))
     back_in(:) = 1;

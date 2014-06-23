@@ -162,7 +162,8 @@ classdef Layer < handle
         
         function Update(layer)
             global plan;
-            lr = plan.lr;
+            pow = max(0, floor((plan.input.repeat - plan.decay_after) / plan.decay_period));
+            lr = plan.lr / (plan.lr_decay ^ pow);
             if (lr == 0)
                 return;
             end 

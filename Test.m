@@ -11,7 +11,7 @@ while (true)
     if (input.step == -1)
         break;
     end
-    fprintf('*');
+    if (mod(input.step, 2) == 0) fprintf('*');end
     ForwardPass();    
     incr = incr + plan.classifier.GetScore();
     all = all + plan.input.batch_size;
