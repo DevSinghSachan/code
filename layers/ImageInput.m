@@ -27,12 +27,8 @@ classdef ImageInput < Input
                 if ~exist(dir_path, 'file')
                     mkdir(dir_path);
                 end
-                target = sprintf('data%s', file_pattern(idxs(end - 1):end));                
-                if ~exist(sprintf('%s.mat', target), 'file')
-                    fprintf('Downloading %s.mat to %s.mat\n', file_pattern, target);
-                    urlwrite(sprintf('%s.mat', file_pattern), sprintf('%s.mat', target));
-                    fprintf('File downloaded successfully.\n');
-                end
+                target = sprintf('data%s', file_pattern(idxs(end - 1):end));   
+                download(sprintf('%s.mat', file_pattern), sprintf('%s.mat', target));                
             else
                 target = file_pattern;
             end

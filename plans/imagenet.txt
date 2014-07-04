@@ -1,7 +1,7 @@
 [    
     {
         "type" : "RawImageInput",
-        "file_pattern": "~/data/imagenet/val_cropped/",
+        "file_pattern": "~/data_tmp/imagenet/val_cropped/",
         "batch_size": 128,
         "rows": 221,
         "cols": 221,
@@ -118,10 +118,20 @@
     },
 
     {
+        "type": "Dropout",
+        "p" : 0.5
+    }
+
+    {
         "type": "FC",
         "depth": 4096,
         "function": "RELU"
     },
+
+    {
+        "type": "Dropout",
+        "p" : 0.5
+    }
 
     {
         "type": "FC",
