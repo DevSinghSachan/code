@@ -9,10 +9,10 @@ classdef LRNormal < Layer
     methods
         function obj = LRNormal(json)
             obj@Layer(FillDefault(json));
-            obj.k = single(json.k);
-            obj.n = single(json.n);
-            obj.alpha = single(json.alpha);
-            obj.beta = single(json.beta);
+            obj.k = single(Val(json, 'k', 2));
+            obj.n = single(Val(json, 'n', 5));
+            obj.alpha = single(Val(json, 'alpha', 1e-4));
+            obj.beta = single(Val(json, 'beta', 0.75));
             obj.Finalize();
         end
         

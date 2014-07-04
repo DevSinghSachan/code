@@ -1,20 +1,10 @@
-function [incr, all] = Evalute(imgs)
-global plan;
-plan.training = 0; % Turns off dropout.
-incr = 0;
-all = 0;
-input = plan.input;
-input.step = 1;
-fprintf('Testing:\n');
-while (true)
-    input.GetImage(train);
-    if (input.step == -1)
-        break;
-    end
-    if (mod(input.step, 2) == 0) fprintf('*');end
+function predictions = Evalute(img)
+    global plan;
+    plan.training = 0; % Turns off dropout.
+    img = single(imread(img));    
+    plan.input.cpu.vars.out = plan.input.Process(img);
+    plan.input.cpu.vars.Y = 0;
     ForwardPass();    
-    incr = incr + plan.classifier.GetScore();
-    all = all + plan.input.batch_size;
-end
-plan.training = 1; % Turns on dropout.
+    plan.training = 1; % Turns on dropout.    
+    predictions = plan.classifier.cpu.vars.pred(1, :);
 end

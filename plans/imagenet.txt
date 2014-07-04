@@ -1,10 +1,10 @@
 [    
     {
-        "type" : "RawImageInput",
-        "file_pattern": "~/data_tmp/imagenet/val_cropped/",
+        "type" : "Input",
+        "file_pattern": "~/val_cropped/",
         "batch_size": 128,
-        "rows": 221,
-        "cols": 221,
+        "rows": 224,
+        "cols": 224,
         "depth": 3
     },
 
@@ -28,16 +28,25 @@
         "local_2d_patch" : {
            "patch_rows": 3,
            "patch_cols": 3,
-           "stride_rows": 3,
-           "stride_cols": 3
+           "stride_rows": 2,
+           "stride_cols": 2
         },
+    },
+
+    {
+        "type": "LRNormal",
+        "one2one": true,
+        "k": 2,
+        "n": 5,
+        "alpha": 1e-4,
+        "beta": 0.75
     },
 
     {
         "type": "Conv",
         "local_2d_patch" : {
-           "patch_rows": 7,
-           "patch_cols": 7,
+           "patch_rows": 5,
+           "patch_cols": 5,
         },
         "depth": 256,
         "function": "RELU"
@@ -46,8 +55,39 @@
     {
         "type": "MaxPooling",
         "local_2d_patch" : {
-           "patch_rows": 2,
-           "patch_cols": 2,
+           "patch_rows": 3,
+           "patch_cols": 3,
+           "stride_rows": 2,
+           "stride_cols": 2
+        },
+    },
+
+    {
+        "type": "LRNormal",
+        "one2one": true,
+        "k": 2,
+        "n": 5,
+        "alpha": 1e-4,
+        "beta": 0.75
+    },
+
+    {
+        "type": "Conv",
+        "local_2d_patch" : {
+           "patch_rows": 3,
+           "patch_cols": 3,
+           "padding_rows": 1,
+           "padding_cols": 1
+        },
+        "depth": 512,
+        "function": "RELU"
+    },
+
+    {
+        "type": "MaxPooling",
+        "local_2d_patch" : {
+           "patch_rows": 3,
+           "patch_cols": 3,
            "stride_rows": 2,
            "stride_cols": 2
         },
@@ -61,30 +101,6 @@
            "padding_rows": 1,
            "padding_cols": 1
         },
-        "depth": 512,
-        "function": "RELU"
-    },
-
-    {
-        "type": "Conv",
-        "local_2d_patch" : {
-           "patch_rows": 3,
-           "patch_cols": 3,
-           "padding_rows": 1,
-           "padding_cols": 1
-        },
-        "depth": 512,
-        "function": "RELU"
-    },
-
-    {
-        "type": "Conv",
-        "local_2d_patch" : {
-           "patch_rows": 3,
-           "patch_cols": 3,
-           "padding_rows": 1,
-           "padding_cols": 1
-        },
         "depth": 1024,
         "function": "RELU"
     },
@@ -97,7 +113,7 @@
            "padding_rows": 1,
            "padding_cols": 1
         },
-        "depth": 1024,
+        "depth": 512,
         "function": "RELU"
     },
 
@@ -106,8 +122,8 @@
         "local_2d_patch" : {
            "patch_rows": 3,
            "patch_cols": 3,
-           "stride_rows": 3,
-           "stride_cols": 3
+           "stride_rows": 2,
+           "stride_cols": 2
         },
     },
 
@@ -118,20 +134,10 @@
     },
 
     {
-        "type": "Dropout",
-        "p" : 0.5
-    }
-
-    {
         "type": "FC",
         "depth": 4096,
         "function": "RELU"
     },
-
-    {
-        "type": "Dropout",
-        "p" : 0.5
-    }
 
     {
         "type": "FC",

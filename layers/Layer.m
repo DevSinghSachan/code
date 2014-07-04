@@ -70,7 +70,7 @@ classdef Layer < handle
                     obj.dims = [Val(json, 'rows', 1), Val(json, 'cols', 1), Val(json, 'depth', 1)];
                 end
             end            
-        end
+        end        
         
         function InitWeights(obj)
         end

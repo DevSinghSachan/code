@@ -22,6 +22,9 @@ classdef Plan < handle
 
     methods
         function obj = Plan(param1, default_on_gpu)
+            if(nargin == 0)
+                return;
+            end            
             if (ischar(param1))
                 jsons = ParseJSON(sprintf('plans/%s.txt', param1));
                 obj.name = param1;

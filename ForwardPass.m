@@ -22,6 +22,6 @@ for i = 2:length(plan.layer)
       obj.FP();
       lapse = toc(fptic);
   end 
-  plan.time.fp(plan.input.step - 1, obj.layer_nr) = lapse;
+  plan.time.fp(plan.input.step, obj.layer_nr) = lapse;
 end
 end

@@ -6,7 +6,7 @@ input = plan.input;
 last_repeat = input.repeat;
 start = tic;
 for repeat = last_repeat:input.max_repeat
-    input.training = 1;
+    plan.training = 1;
     repeattime = tic;
     incorrect = 0;
     all = 0;
@@ -32,22 +32,6 @@ for repeat = last_repeat:input.max_repeat
     save_plan();
 end
 fprintf('Training is finished. Total time = %.2f mins.\n', toc(start) / 60);
-end
-
-function save_plan()
-    global plan
-    fname = sprintf('models/%s.mat', plan.name);
-    fprintf('Saving model to the file : %s\n', fname);
-    train = plan.input.train;
-    test = plan.input.test;
-    val = plan.input.val;
-    plan.input.train = [];
-    plan.input.test = [];
-    plan.input.val = [];    
-    save(fname, 'plan');
-    plan.input.train = train;
-    plan.input.test = test;
-    plan.input.val = val;        
 end
 
 

@@ -1,8 +1,7 @@
 [    
     {
-        "type" : "ImageInput",
+        "type" : "Input",
         "file_pattern": "http://www.cs.nyu.edu/~zaremba/data/mnist/",
-        "batch_size": 100,
         "rows": 28,
         "cols": 28
     },

@@ -1,8 +1,7 @@
 [    
     {
-        "type" : "ImageInput",
+        "type" : "Input",
         "file_pattern": "http://www.cs.nyu.edu/~zaremba/data/cifar/",
-        "batch_size": 128,
         "rows": 32,
         "cols": 32,
         "depth" : 3,

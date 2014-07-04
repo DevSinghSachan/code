@@ -1,4 +1,4 @@
 addpath(genpath('.'));
 on_gpu = false;
-Plan('cifar', on_gpu);
+Plan('mnist', on_gpu);
 Run();
